@@ -12,7 +12,7 @@ export class DefaultComponent implements OnInit{
 		private _route: ActivatedRoute,
 		private _router: Router
 	){
-		this.title = 'Homepage';
+		this.title = 'AGD - Clientes';
 	}
 
 	ngOnInit(){

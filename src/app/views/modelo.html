@@ -17,6 +17,7 @@
                     <th>Trimestre</th>
                     <th>Ejercicio</th>                    
                     <th>Tipo</th>
+                    <th>Fecha</th>
                     <th>Enlace</th>
                 </tr>
 
@@ -46,6 +47,11 @@
                             {{modelo.tipo}}
                         </h4>
                     </td>
+                    <td>
+                        <h4>
+                            {{modelo.fechahora.timestamp | generateDate}}
+                        </h4>
+                    </td>                    
                     <td>
                         <a href="http://localhost/agd/symfony/web/uploads/modelos/{{modelo.ruta}}" target="_blank" class="btn btn-warning"> Descargar </a>
                     </td>

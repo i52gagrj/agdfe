@@ -15,6 +15,7 @@
                     <th>Emisor</th>
                     <th>Receptor</th>
                     <th>Texto</th>
+                    <th>Fecha</th>
                 </tr>
 
                 <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
@@ -32,7 +33,12 @@
                         <h4>
                             {{mensaje.texto}}
                         </h4>
-                    </td> 
+                    </td>                                                 
+                    <td>						
+                        <h4>
+                            {{mensaje.fechahora.timestamp | generateDate}}
+                        </h4>
+                    </td>                                             
                 </tr>
                 
             </table>

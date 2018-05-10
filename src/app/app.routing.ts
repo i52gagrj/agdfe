@@ -11,7 +11,7 @@ import { MensajeComponent } from './components/mensaje.component';
 import { MensajeNewComponent } from './components/mensaje.new.component';
  
 const appRoutes: Routes = [
-	{path:'', component: DefaultComponent},
+	{path:'', component: DocumentoComponent},
 	{path:'login', component: LoginComponent},
 	{path:'login/:id', component: LoginComponent},
 	{path:'register', component: RegisterComponent},

@@ -2,9 +2,6 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { RutasDeArchivosService } from '../rutas-de-archivos.service';
-//import { NgUploaderOptions, UploadedFile, UploadRejected } from 'ngx-uploader';
-import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { Documento } from '../models/documento';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
@@ -50,10 +47,10 @@ export class DocumentoComponent implements OnInit {
             if(!page){
                 page = 1;
             }
-                        
+
+            this.loading = 'show';            
             this._documentoService.getDocumentos(this.token, page).subscribe(
-                response => {
-                    console.log(this.token);
+                response => {                    
                     if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión")
                         this._userService.logout();
@@ -64,8 +61,7 @@ export class DocumentoComponent implements OnInit {
                     else{    
                         this.documentos = response.data;
                         this.token = this._userService.setToken(response.token);                                                
-                        this.loading = 'hide';
-                        console.log(this.token);
+                        this.loading = 'hide';                        
                         // Total paginas
                         this.pages = [];
                         for(let i = 0; i < response.total_pages; i++){
@@ -111,8 +107,9 @@ export class DocumentoComponent implements OnInit {
                     if(this.status_documento != 'success'){
                         this.status_documento = 'error';
                     }else{
-                        this.documento = response.data;
+                        this.documento = response.data;                                                
                         //this._router.navigate(['/mostrardocumento']);
+                        //Volver a cargar la página documento, para reiniciar el token
                     }     
                 }               
             },

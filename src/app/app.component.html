@@ -9,7 +9,7 @@
       </button>
       
       <a class="navbar-brand" [routerLink]="['/']" >
-        AGD
+        AGD Clientes
       </a> 
     </div>
 
@@ -80,12 +80,12 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right" *ngIf="identity && identity.sub">
-        <li>
+        <!-- <li>
           <a [routerLink]="['/']">
             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
             Ajustes
           </a>
-        </li>
+        </li>-->
 
         <li>
           <a [routerLink]="['/login', 1]">

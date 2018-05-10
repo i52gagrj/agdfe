@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit{
 	public user;
 	public identity;
 	public token;
+	public fallo;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -60,7 +61,8 @@ export class LoginComponent implements OnInit{
 	}
 
 
-	onSubmit(){				
+	onSubmit(){			
+		this.fallo = false;	
 		this._userService.signup(this.user).subscribe(
 			response => {
 				this.token = response;
@@ -78,8 +80,25 @@ export class LoginComponent implements OnInit{
 									console.log('Error en el servidor');
 								}{
 									if(!this.identity.status){
-										localStorage.setItem('identity', JSON.stringify(this.identity));										
-										window.location.href = '/documento';
+										if(this.identity.isadmin){
+											console.log('Esta es la entrada de clientes, no de administradores');
+											this.fallo = true;
+											this._userService.logout2().subscribe(            
+												response => {                                     
+													console.log("fin")
+												},
+												error => {
+													console.log(<any>error)                
+												}
+											);
+											this._userService.logout();
+											this.identity = null;
+											this.token = null;
+											window.location.href = '/login';
+										}else{
+											localStorage.setItem('identity', JSON.stringify(this.identity));										
+											window.location.href = '/documento';
+										}
 									}									
 								}
 							},

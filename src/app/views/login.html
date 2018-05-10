@@ -25,5 +25,9 @@
 
 		<input type="submit" value="Entrar" class="btn btn-primary" [disabled]="!loginForm.form.valid" />
 
+		<div class="alert alert-primary" role="alert" *ngIf="fallo">
+			Esta sección es solo para administradores
+		</div>
+
   	</form>
 </div>
