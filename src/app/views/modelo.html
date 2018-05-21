@@ -19,43 +19,45 @@
                     <th>Tipo</th>
                     <th>Fecha</th>
                     <th>Enlace</th>
-                </tr>
-
+                </tr>                
                 <tr *ngFor="let modelo of modelos" class="modelos-item">
                     <td>						
-                        <h4>
+                
                             {{modelo.descripcion}}
-                        </h4>
+                
                     </td>
                     <td>						
-                        <h4>
+                
                             {{modelo.codigo}}
-                        </h4>
+                
                     </td>
                     <td>						
-                        <h4>
+                
                             {{modelo.trimestre}}
-                        </h4>
+                
                     </td> 
                     <td>						
-                        <h4>
+                
                             {{modelo.ejercicio}}
-                        </h4>
+                
                     </td>                                                           
                     <td>
-                        <h4>
+                
                             {{modelo.tipo}}
-                        </h4>
+                
                     </td>
                     <td>
-                        <h4>
+                
                             {{modelo.fechahora.timestamp | generateDate}}
-                        </h4>
+                
                     </td>                    
                     <td>
-                        <a href="http://localhost/agd/symfony/web/uploads/modelos/{{modelo.ruta}}" target="_blank" class="btn btn-warning"> Descargar </a>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarModelo(modelo.id, modelo.ruta)"> Mostrar </button>
                     </td>
-                </tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="descargarModelo(modelo.id, modelo.ruta)"> Descargar </button>
+                    </td>  
+                </tr>                
                 
             </table>
 

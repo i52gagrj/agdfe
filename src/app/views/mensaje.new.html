@@ -17,7 +17,7 @@
 		<form #mensajeNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
 			<p> 
 				<label>Descripcion</label>
-				<input type="text" class="form-control" name="mensajetexto" #mensajetexto="ngModel" [(ngModel)]="mensaje.texto" required />
+				<textarea class="form-control" name="mensajetexto" #mensajetexto="ngModel" [(ngModel)]="mensaje.texto" required ></textarea>
 				<span *ngIf="!mensajetexto.valid && mensajetexto.touched">La descripción no es correcta</span>
 			</p>	        			
 

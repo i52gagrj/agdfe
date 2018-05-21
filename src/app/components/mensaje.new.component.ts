@@ -31,7 +31,7 @@ export class MensajeNewComponent implements OnInit {
         if(this.identity == null && !this.identity.sub){
             this._router.navigate(['/login']);
         }else {
-            this.mensaje = new Mensaje(1, null, this.identity.sub, this.identity.admin, "null");
+            this.mensaje = new Mensaje(1, null, this.identity.sub, this.identity.admin, false);
         }       
         console.log('El componente mensaje.new.component ha sido cargado!!');         
     }

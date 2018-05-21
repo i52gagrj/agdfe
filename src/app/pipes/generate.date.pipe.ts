@@ -2,22 +2,29 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({name:'generateDate'})
 export class GenerateDatePipe implements PipeTransform{
-	transform(value):string{
-		let date = new Date(value *1000);
+	transform(value):string{		
+		var a = new Date(value * 1000);
+		var months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dec'];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
 
-		let day = date.getDate();
-		let final_day = day.toString();
-		if(day <= 9) {
-			final_day = '0'+day; 
+		var hour = a.getHours();
+		let hourfinal = hour.toString()
+		if(hour <= 9){
+			hourfinal = '0'+hour;
+		} 
+		var min = a.getMinutes();
+		let minfinal = min.toString();
+		if(min <= 9){
+			minfinal = '0'+min; 
+		} 
+		var sec = a.getSeconds();
+		let secfinal = sec.toString();
+		if(sec <= 9){
+			secfinal = '0'+sec;
 		}
-
-		let month = (date.getMonth()+1);
-		let final_month = month.toString();
-		if(month<=9){
-			final_month = '0'+month;
-		}
-
-		let result = final_day + '/' + final_month + '/' + date.getFullYear();
-		return result;
+		var time = date + '-' + month + '-' + year + ' ' + hourfinal + ':' + minfinal + ':' + secfinal ;
+		return time;
 	}
 }

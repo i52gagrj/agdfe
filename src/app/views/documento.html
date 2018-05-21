@@ -14,9 +14,9 @@
                 <tr>
                     <th>Descripción</th>
                     <th>Tipo</th>
-                    <th>Fecha</th>                    
-                    <th>Revisado</th>
-                    <th>Enlace</th>
+                    <th>Fecha</th>                                        
+                    <th>Acciones</th>
+                    <th> </th>
                     <th> </th>
                 </tr>
 
@@ -36,16 +36,18 @@
                             {{documento.fechahora.timestamp | generateDate}}
                         </h5>
                     </td>    
+                    <!--
                     <td>
                         <h5>
                             <input type="checkbox" name="visto" value={{documento.visto}}/> 
                         </h5>
                     </td>                                    
+                    -->
                     <td>
-                        <a href="http://localhost/agd/symfony/web/uploads/documentos/{{documento.ruta}}" target="_blank" class="btn btn-primary"> Mostrar </a>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id, documento.ruta)"> Mostrar </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-info" (click)="mostrarDocumento(documento.id)"> Mostrar </button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
                     </td>                     
                     <td>
                         <a href="#myModal" role="button" class="btn btn-danger" data-toggle="modal">Borrar</a>

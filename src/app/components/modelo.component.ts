@@ -2,12 +2,11 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { RutasDeArchivosService } from '../rutas-de-archivos.service';
-//import { NgUploaderOptions, UploadedFile, UploadRejected } from 'ngx-uploader';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { Modelo } from '../models/modelo';
 import { UserService } from '../services/user.service';
 import { ModeloService } from '../services/modelo.service';
+import { saveAs } from 'file-saver';
 
 @Component({
 	selector: 'modelo',
@@ -23,6 +22,8 @@ export class ModeloComponent implements OnInit{
     public pagePrev;
     public pageNext;
     public loading;
+    public file: File;
+    public id;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -91,4 +92,81 @@ export class ModeloComponent implements OnInit{
             );
         });         
     }
+
+    mostrarModelo(id, nombre){   
+        //Si el id del documento pasado es el mismo que se le pasó anteriormente,
+        //se muestra sin necesidad de realizar la consulta
+        //Si no, se realiza la consulta al Backend
+        if(id==this.id){
+            var url= window.URL.createObjectURL(this.file);          
+            window.open(url);
+            this.mostrarTodosModelos();
+        }else{    
+            this.id = id;
+            this._modeloService.getModelo(this.token, id).subscribe(            
+                response => {                    
+                    if(!response.status){                    
+                        this.file = response;                    
+                        console.log("Información recibida");          
+                        var url= window.URL.createObjectURL(this.file);          
+                        window.open(url);
+                        this.mostrarTodosModelos();
+                    }
+                    else{
+                        if(response.code = 405){
+                            console.log("Token caducado. Reiniciar sesión");
+                            this._userService.logout();
+                            this.identity = null;
+                            this.token = null;
+                            window.location.href = '/login';                        
+                        }else{
+                            console.log(response);              
+                            this.token = this._userService.setToken(response.token);           
+                        }                         
+                    }               
+                },
+                error => {
+                    console.log("AQUÍ!!!");
+                    console.log(<any>error);                
+                }
+            );
+        }        
+    }
+
+    descargarModelo(id, nombre){   
+        //Si el id del documento pasado es el mismo que se le pasó anteriormente,
+        //se muestra sin necesidad de realizar la consulta
+        //Si no, se realiza la consulta al Backend        
+        if(id==this.id){
+            saveAs(this.file, nombre);
+        }else{    
+            this.id = id;
+            this._modeloService.getModelo(this.token, id).subscribe(            
+                response => {                
+                    if(!response.status){                    
+                        this.file = response;
+                        saveAs(this.file, nombre);
+                        this.mostrarTodosModelos();                                        
+                    }
+                    else{
+                        if(response.code = 405){
+                            console.log("Token caducado. Reiniciar sesión");
+                            this._userService.logout();
+                            this.identity = null;
+                            this.token = null;
+                            window.location.href = '/login';                        
+                        }else{
+                            console.log(response);       
+                            this.token = this._userService.setToken(response.token);                  
+                        } 
+                            
+                    }               
+                },
+                error => {
+                    console.log("AQUÍ!!!");
+                    console.log(<any>error);                
+                }
+            );
+        }        
+    }     
 }	

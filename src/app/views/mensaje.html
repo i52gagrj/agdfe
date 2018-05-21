@@ -20,24 +20,16 @@
 
                 <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
                     <td>						
-                        <h4>
-                            {{mensaje.emisor}}
-                        </h4>
+                        {{mensaje.emisor}}                        
                     </td>
                     <td>						
-                        <h4>
-                            {{mensaje.receptor}}
-                        </h4>
+                        {{mensaje.receptor}}
                     </td>
-                    <td>						
-                        <h4>
-                            {{mensaje.texto}}
-                        </h4>
+                    <td>						                        
+                        {{mensaje.texto}}                        
                     </td>                                                 
-                    <td>						
-                        <h4>
-                            {{mensaje.fechahora.timestamp | generateDate}}
-                        </h4>
+                    <td>						                        
+                        {{mensaje.fechahora.timestamp | generateDate}}                        
                     </td>                                             
                 </tr>
                 

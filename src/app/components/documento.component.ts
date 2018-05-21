@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Documento } from '../models/documento';
 import { UserService } from '../services/user.service';
 import { DocumentoService } from '../services/documento.service';
+import { saveAs } from 'file-saver';
 
 @Component({
 	selector: 'documento',
@@ -23,6 +24,7 @@ export class DocumentoComponent implements OnInit {
     public loading;
     public id;
     public documento;
+    public file: File;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -90,31 +92,60 @@ export class DocumentoComponent implements OnInit {
         });         
     }
 
-    mostrarDocumento(id){       
+    mostrarDocumento(id, nombre){       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
-                if(response.code == 405){
-                    console.log("Token caducado. Reiniciar sesión");
-                    this._userService.logout();
-                    this.identity = null;
-                    this.token = null;
-                    window.location.href = '/login';                        
+                
+                if(!response.status){                    
+                    this.file = response;                    
+                    console.log("Información recibida");          
+                    var url= window.URL.createObjectURL(this.file);          
+                    window.open(url);
                 }
-                else{  
-                    console.log("Información recibida");
-                    this.status_documento = response.status;  
-                    this.token = this._userService.setToken(response.token);                   
-                    if(this.status_documento != 'success'){
-                        this.status_documento = 'error';
+                else{
+                    if(response.code = 405){
+                        console.log("Token caducado. Reiniciar sesión");
+                        this._userService.logout();
+                        this.identity = null;
+                        this.token = null;
+                        window.location.href = '/login';                        
                     }else{
-                        this.documento = response.data;                                                
-                        //this._router.navigate(['/mostrardocumento']);
-                        //Volver a cargar la página documento, para reiniciar el token
-                    }     
+                        console.log(response);                        
+                    } 
+                        
                 }               
             },
             error => {
-                console.log(<any>error)                
+                console.log("AQUÍ!!!");
+                console.log(<any>error);                
+            }
+        );        
+    }
+
+    descargarDocumento(id, nombre){       
+        this._documentoService.getDocumento(this.token, id).subscribe(            
+            response => {
+                
+                if(!response.status){                    
+                    this.file = response;
+                    saveAs(this.file, nombre);                                        
+                }
+                else{
+                    if(response.code = 405){
+                        console.log("Token caducado. Reiniciar sesión");
+                        this._userService.logout();
+                        this.identity = null;
+                        this.token = null;
+                        window.location.href = '/login';                        
+                    }else{
+                        console.log(response);                        
+                    } 
+                        
+                }               
+            },
+            error => {
+                console.log("AQUÍ!!!");
+                console.log(<any>error);                
             }
         );        
     }

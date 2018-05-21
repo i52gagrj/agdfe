@@ -2,8 +2,6 @@ import { Component, OnInit, EventEmitter, NgZone, Inject, NgModule } from '@angu
 import { BrowserModule } from '@angular/platform-browser';
 import { Http, Response, Request, RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-//import { RutasDeArchivosService } from '../rutas-de-archivos.service';
-//import { NgUploaderOptions, UploadedFile, UploadRejected } from 'ngx-uploader';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 import { Mensaje } from '../models/mensaje';
 import { UserService } from '../services/user.service';
@@ -38,10 +36,10 @@ export class MensajeComponent implements OnInit{
 
 	ngOnInit(){
         console.log('El componente mensaje.component ha sido cargado!!');        
-        this.mostrarTodosMensajes();        
+        this.mostrarNuevosMensajes();        
 	}
 
-	mostrarTodosMensajes(){
+	mostrarNuevosMensajes(){
         this._route.params.forEach((params: Params) => {
             let page = +params['page'];            
 

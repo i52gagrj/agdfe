@@ -14,8 +14,8 @@ import { ModeloComponent } from './components/modelo.component';
 import { MensajeComponent } from './components/mensaje.component';
 import { MensajeNewComponent } from './components/mensaje.new.component';
 import { DefaultComponent } from './components/default.component';
-import { GenerateDatePipe } from './pipes/generate.date.pipe';
 
+import { GenerateDatePipe } from './pipes/generate.date.pipe';
 import { NgUploaderModule } from 'ngx-uploader';
 import { FileUploadModule } from 'ng2-file-upload';
 
