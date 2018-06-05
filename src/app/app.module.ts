@@ -7,7 +7,7 @@ import { routing, appRoutingProviders } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login.component';
-import { RegisterComponent } from './components/register.component';
+//import { RegisterComponent } from './components/register.component';
 import { DocumentoComponent } from './components/documento.component';
 import { DocumentoNewComponent } from './components/documento.new.component';
 import { ModeloComponent } from './components/modelo.component';
@@ -19,11 +19,13 @@ import { GenerateDatePipe } from './pipes/generate.date.pipe';
 import { NgUploaderModule } from 'ngx-uploader';
 import { FileUploadModule } from 'ng2-file-upload';
 
+import { DataTableModule } from 'angular2-datatable';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent, 
-    RegisterComponent,
+    //RegisterComponent,
     DefaultComponent,
     DocumentoComponent,
     DocumentoNewComponent,
@@ -38,7 +40,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     HttpModule,    
     routing,
     NgUploaderModule,
-    FileUploadModule
+    FileUploadModule,
+    DataTableModule
   ],
   providers: [ appRoutingProviders ],
   bootstrap: [ AppComponent ],

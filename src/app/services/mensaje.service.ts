@@ -22,14 +22,10 @@ export class MensajeService{
 		return this._http.post(this.url+'/mensaje/new', params, {headers: headers}).map(res => res.json());
 	}	
 	
-	getMensajes(token, page = null){
+	getMensajes(token){
 		let params = "authorization="+token;
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/mensaje/listall?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/mensaje/listall', params, {headers: headers}).map(res => res.json());
     }	
 }	

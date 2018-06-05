@@ -10,8 +10,9 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
-            <table class="table table-hover table-stripped" id="documentos-list" *ngIf="documentos && documentos.length >= 1" >
-                <tr>
+            <table class="table table-hover table-stripped" [mfData]="documentos" #mf="mfDataTable" id="documentos-list" *ngIf="documentos && documentos.length >= 1" [mfRowsOnPage]="rowsOnPage">
+                <thead>
+                <tr>                    
                     <th>Descripción</th>
                     <th>Tipo</th>
                     <th>Fecha</th>                                        
@@ -19,8 +20,10 @@
                     <th> </th>
                     <th> </th>
                 </tr>
+                </thead>
 
-                <tr *ngFor="let documento of documentos" class="documento-item">                    
+                <tbody>
+                <tr *ngFor="let documento of mf.data" class="documento-item">                    
                     <td>						
                         <h5>
                             {{documento.descripcion}}
@@ -36,15 +39,15 @@
                             {{documento.fechahora.timestamp | generateDate}}
                         </h5>
                     </td>    
-                    <!--
+                    
                     <td>
                         <h5>
-                            <input type="checkbox" name="visto" value={{documento.visto}}/> 
+                            <input type="checkbox" name="visto" value="documento.visto"/> 
                         </h5>
                     </td>                                    
-                    -->
+                    
                     <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id, documento.ruta)"> Mostrar </button>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id)"> Mostrar </button>
                     </td>
                     <td>
                         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
@@ -70,6 +73,15 @@
                         </div>                        
                     </td>                                    
                 </tr>
+                </tbody>    
+
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                    <mfBootstrapPaginator></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>
                 
             </table>
 
@@ -80,7 +92,7 @@
                 </div>
             </div>
 
-			<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
+			<!--<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
 				<li>
 					<a [routerLink]="['/documento', pagePrev]" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
@@ -96,7 +108,7 @@
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
-            </ul>    
+            </ul>    -->
             
             <!-- <div>
                 <a [routerLink]="['/documento-new']" *ngIf="identity && identity.sub" class="btn btn-primary">                    

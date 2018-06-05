@@ -14,24 +14,11 @@ export class ModeloService{
 		this.url = GLOBAL.url;
 	}
 	
-    create(token, modelo, file) {
-		let json = JSON.stringify(modelo);
-		let params = "json="+json+"&authorization="+token+"&file="+file;
-		//let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
-
-		//return this._http.post(this.url+'/documento/new', params, {headers: headers}).map(res => res.json());
-		return this._http.post(this.url+'/modelo/new', params).map(res => res.json());
-	}	
-	
-	getModelos(token, page = null){
+	getModelos(token){
 		let params = "authorization="+token;
 		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
 
-		if(page == null) {
-			page=1;
-		}
-
-		return this._http.post(this.url+'/modelo/listall?page='+page , params, {headers: headers}).map(res => res.json());
+		return this._http.post(this.url+'/modelo/listall', params, {headers: headers}).map(res => res.json());
 	}	
 	
     getModelo(token, id){

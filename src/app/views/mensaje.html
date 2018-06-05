@@ -10,21 +10,30 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
-            <table class="table table-hover table-stripped" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" >
+            <table class="table table-hover table-stripped" [mfData]="mensajes" #mf="mfDataTable" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" [mfRowsOnPage]="rowsOnPage">
+                <thead>
                 <tr>
                     <th>Emisor</th>
                     <th>Receptor</th>
                     <th>Texto</th>
                     <th>Fecha</th>
                 </tr>
+                </thead>
 
-                <tr *ngFor="let mensaje of mensajes" class="mensajes-item">
-                    <td>						
+                <tbody>
+                <tr *ngFor="let mensaje of mf.data" class="mensajes-item">
+                    <td *ngIf="mensaje.emisor == identity.sub">
+                        {{identity.nombre}}
+                    </td>
+                    <td *ngIf="mensaje.emisor != identity.sub">
                         {{mensaje.emisor}}                        
                     </td>
-                    <td>						
-                        {{mensaje.receptor}}
+                    <td *ngIf="mensaje.receptor == identity.sub">
+                        {{identity.nombre}}
                     </td>
+                    <td *ngIf="mensaje.receptor != identity.sub">
+                        {{mensaje.receptor}}
+                    </td>                    
                     <td>						                        
                         {{mensaje.texto}}                        
                     </td>                                                 
@@ -32,6 +41,15 @@
                         {{mensaje.fechahora.timestamp | generateDate}}                        
                     </td>                                             
                 </tr>
+                </tbody>    
+
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                    <mfBootstrapPaginator></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>                
                 
             </table>
 
@@ -42,7 +60,7 @@
                 </div>
             </div>
 
-			<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
+			<!--<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
 				<li>
 					<a [routerLink]="['/mensaje', pagePrev]" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
@@ -50,7 +68,7 @@
 				</li>
 
 				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/mensaje', page+1]">{{page+1}} </a>
+					<a [routerLink]="['/mensaje', page+1]"> {{page+1}} </a>
 				</li>
 
 				<li>
@@ -58,7 +76,7 @@
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
-            </ul>  
+            </ul>  -->
 
         </div>
     </div>

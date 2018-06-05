@@ -6,6 +6,7 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions }
 import { Mensaje } from '../models/mensaje';
 import { UserService } from '../services/user.service';
 import { MensajeService } from '../services/mensaje.service';
+import { DataTableModule } from 'angular2-datatable';
 
 @Component({
 	selector: 'mensaje',
@@ -13,6 +14,11 @@ import { MensajeService } from '../services/mensaje.service';
 	providers: [UserService, MensajeService]
 })
 export class MensajeComponent implements OnInit{
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "";
+    public sortOrder = "desc";
+    
     public title: string;
     public identity;
     public token;
@@ -39,56 +45,46 @@ export class MensajeComponent implements OnInit{
         this.mostrarNuevosMensajes();        
 	}
 
-	mostrarNuevosMensajes(){
-        this._route.params.forEach((params: Params) => {
-            let page = +params['page'];            
-
-            if(!page){
-                page = 1;
-            }            
-
-            this.loading = 'show';            
-            this._mensajeService.getMensajes(this.token, page).subscribe(
-                response => {
-                    if(response.code == 405){
-                        console.log("Token caducado. Reiniciar sesión")
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
-                    }
-                    else{                     
-                        this.mensajes = response.data;
-                        this.token = this._userService.setToken(response.token);                 
-                        this.loading = 'hide';
-
-                        // Total paginas
-                        this.pages = [];
-                        for(let i = 0; i < response.total_pages; i++){
-                            this.pages.push(i);                        
-                        }
-
-                        // Pagina anterior
-                        if(page >= 2){
-                            this.pagePrev = (page - 1);
-                        }else{
-                            this.pagePrev = page;                        
-                        }  
-
-                        // Pagina siguiente
-                        if(page < response.total_pages){
-                            this.pageNext = (page+1);
-                        }else{
-                            this.pageNext = page;
-                        }
-                    }
-                },
-                error => {
-                    console.log(<any>error);
+	mostrarNuevosMensajes(){          
+        this.loading = 'show';            
+        this._mensajeService.getMensajes(this.token).subscribe(
+            response => {
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
                 }
-            );
-        }); 
-        //console.log(this.loading);
-    }
-    
+                else{                     
+                    this.mensajes = response.data;
+                    this.token = this._userService.setToken(response.token);                 
+                    this.loading = 'hide';
+
+                    // Total paginas
+                    /*this.pages = [];
+                    for(let i = 0; i < response.total_pages; i++){
+                        this.pages.push(i);                        
+                    }
+
+                    // Pagina anterior
+                    if(page >= 2){
+                        this.pagePrev = (page - 1);
+                    }else{
+                        this.pagePrev = page;                        
+                    }  
+
+                    // Pagina siguiente
+                    if(page < response.total_pages){
+                        this.pageNext = (page+1);
+                    }else{
+                        this.pageNext = page;
+                    }*/
+                }
+            },
+            error => {
+                console.log(<any>error);
+            }
+        );
+    }    
 }	
