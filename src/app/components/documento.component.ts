@@ -24,11 +24,8 @@ export class DocumentoComponent implements OnInit {
     public token;
     public documentos: Array<Documento>;
     public status_documento;
-    public pages;
-    public pagePrev;
-    public pageNext;
     public loading;
-    public id;
+    //public id;
     public documento;
     public file: File;
 
@@ -44,6 +41,11 @@ export class DocumentoComponent implements OnInit {
 	}
 
 	ngOnInit() {
+        if(this.identity == null && !this.identity.sub){
+            this._router.navigate(['/login']);
+        }else {
+            this.documento = new Documento(1, "", "", "", this.identity.sub, "null");
+        }
 		console.log('El componente documento.component ha sido cargado!!');	
         this.mostrarTodosDocumentos();
     }
@@ -63,25 +65,6 @@ export class DocumentoComponent implements OnInit {
                     this.documentos = response.data;
                     this.token = this._userService.setToken(response.token);                                                
                     this.loading = 'hide';                        
-                    // Total paginas
-                    /*this.pages = [];
-                    for(let i = 0; i < response.total_pages; i++){
-                        this.pages.push(i);                        
-                    }
-
-                    // Pagina anterior
-                    if(page >= 2){
-                        this.pagePrev = (page - 1);
-                    }else{
-                        this.pagePrev = page;                        
-                    }  
-
-                    // Pagina siguiente
-                    if(page < response.total_pages){
-                        this.pageNext = (page+1);
-                    }else{
-                        this.pageNext = page;
-                    }*/
                 }
             },
             error => {
@@ -120,7 +103,7 @@ export class DocumentoComponent implements OnInit {
         );        
     }
 
-    descargarDocumento(id, nombre){       
+    /*descargarDocumento(id, nombre){       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
                 
@@ -146,7 +129,7 @@ export class DocumentoComponent implements OnInit {
                 console.log(<any>error);                
             }
         );        
-    }
+    }*/
 
     borrarDocumento(id){        
         this._documentoService.borrarDocumento(this.token, id).subscribe(            
@@ -172,6 +155,40 @@ export class DocumentoComponent implements OnInit {
                 console.log(<any>error)                
             }
         );         
+    }
+
+    fileChange(event) {
+        let fileList: FileList = event.target.files;
+        if(fileList.length > 0) {
+            this.file = fileList[0];            
+        }
+    }
+
+    onSubmit(){
+        this._documentoService.create(this.token, this.documento, this.file).subscribe(            
+            response => {
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
+                }
+                else{                                                         
+                    this.status_documento = response.status;
+                    this.token = this._userService.setToken(response.token);                     
+                    if(this.status_documento != 'success'){
+                        this.status_documento = 'error';
+                    }else{
+                        this.documento = response.data;
+                        this.ngOnInit();
+                    }     
+                }               
+            },
+            error => {
+                console.log(<any>error)                
+            }
+        );
     }
 }
 

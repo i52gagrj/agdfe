@@ -10,6 +10,35 @@
                 <img src="assets/img/loader.gif" />
             </div>
 
+            <div class="card bg-light" *ngIf="!clienteE">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Nuevo Mensaje
+                    </button>
+                    </h5>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="alert alert-success" *ngIf="status_mensaje == 'success'">
+                            El mensaje se ha creado correctamente		
+                        </div>                    
+                        <div class="alert alert-danger" *ngIf="status_mensaje == 'error'" >
+                            ¡El mensaje NO se ha creado!
+                        </div>                      
+                        <form #mensajeNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
+                            <p> 
+                                <!--<label>Introduzca el mensaje:</label>-->
+                                <textarea class="form-control" name="mensajetexto" #mensajetexto="ngModel" [(ngModel)]="mensaje.texto" required ></textarea>
+                                <span *ngIf="!mensajetexto.valid && mensajetexto.touched">La descripción no es correcta</span>
+                            </p>	        			
+                
+                            <input type="submit" value="Enviar mensaje" class="btn btn-primary" [disabled]="!mensajeNewForm.form.valid" />
+                        </form> 
+                    </div>
+                </div>
+            </div>              
+
             <table class="table table-hover table-stripped" [mfData]="mensajes" #mf="mfDataTable" id="mensajes-list" *ngIf="mensajes && mensajes.length >= 1" [mfRowsOnPage]="rowsOnPage">
                 <thead>
                 <tr>
@@ -51,7 +80,7 @@
                 </tr>
                 </tfoot>                
                 
-            </table>
+            </table>         
 
             <div class="col-md-12" *ngIf="loading != 'show' && !mensajes">
                 <div class="clearfix"></div>
@@ -59,24 +88,6 @@
                     No se han encontrado mensajes
                 </div>
             </div>
-
-			<!--<ul class="pagination" *ngIf="mensajes && mensajes.length >= 1">
-				<li>
-					<a [routerLink]="['/mensaje', pagePrev]" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-
-				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/mensaje', page+1]"> {{page+1}} </a>
-				</li>
-
-				<li>
-					<a [routerLink]="['/mensaje', pageNext]" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-            </ul>  -->
 
         </div>
     </div>

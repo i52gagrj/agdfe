@@ -15,7 +15,7 @@
 
     <div class="collapse navbar-collapse" id="menu">
       <ul class="nav navbar-nav">        
-        <li class="dropdown">
+        <!--<li class="dropdown">
           <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             Documentos 
@@ -35,7 +35,14 @@
               </a>
             </li>
           </ul>
-        </li>  
+        </li>-->
+
+        <li>          
+          <a [routerLink]="['/documento']" *ngIf="identity && identity.sub">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Documentos
+          </a>
+        </li>
 
         <li>
           <a [routerLink]="['/modelo']" *ngIf="identity && identity.sub">
@@ -44,7 +51,14 @@
           </a>
         </li>  
 
-        <li class="dropdown">
+        <li>          
+          <a [routerLink]="['/mensaje']" *ngIf="identity && identity.sub">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Mensajes
+          </a>
+        </li>        
+
+        <!--<li class="dropdown">
           <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" *ngIf="identity && identity.sub">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             Mensajes 
@@ -64,7 +78,7 @@
               </a>
             </li>
           </ul>
-        </li>  
+        </li>  -->
                           
       </ul>
 

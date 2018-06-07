@@ -23,10 +23,12 @@ export class MensajeComponent implements OnInit{
     public identity;
     public token;
     public mensajes: Array<Mensaje>;
+    public mensaje: Mensaje;
     public pages;
     public pagePrev;
     public pageNext;
     public loading;
+    public status_mensaje;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -41,7 +43,12 @@ export class MensajeComponent implements OnInit{
 	}
 
 	ngOnInit(){
-        console.log('El componente mensaje.component ha sido cargado!!');        
+        console.log('El componente mensaje.component ha sido cargado!!');   
+        if(this.identity == null && !this.identity.sub){
+            this._router.navigate(['/login']);
+        }else {
+            this.mensaje = new Mensaje(1, null, this.identity.sub, this.identity.admin, false);
+        }             
         this.mostrarNuevosMensajes();        
 	}
 
@@ -84,6 +91,33 @@ export class MensajeComponent implements OnInit{
             },
             error => {
                 console.log(<any>error);
+            }
+        );
+    }   
+    
+    onSubmit(){        
+        this._mensajeService.create(this.token, this.mensaje).subscribe(
+            response => {
+                if(response.code == 405){
+                    console.log("Token caducado. Reiniciar sesión")
+                    this._userService.logout();
+                    this.identity = null;
+                    this.token = null;
+                    window.location.href = '/login';                        
+                }
+                else{                   
+                    this.token = this._userService.setToken(response.token);              
+                    this.status_mensaje = response.status;                    
+                    if(this.status_mensaje != 'success'){
+                        this.status_mensaje = 'error';
+                    }else{
+                        this.mensaje = response.data;
+                        this._router.navigate(['/mensaje']);
+                    }
+                }                    
+            },
+            error => {
+                console.log(<any>error)
             }
         );
     }    
