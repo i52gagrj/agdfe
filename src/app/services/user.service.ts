@@ -64,6 +64,7 @@ export class UserService{
 	logout(){
 		localStorage.removeItem('identity');
 		localStorage.removeItem('token');
+		localStorage.removeItem('cliente');
 	}
 
 	logout2() {
@@ -74,5 +75,12 @@ export class UserService{
 		
 		return this._http.post(this.url+'/logout', params, {headers: headers}).map(res => res.json());
 	}
+
+	returnInfoClient(token) {		
+		let params = "authorization="+token;
+		let headers = new Headers({'Content-Type':'application/x-www-form-urlencoded'});
+
+		return this._http.post(this.url+'/returninfoclient', params, {headers: headers}).map(res => res.json());
+	}	
 
 }	

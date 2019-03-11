@@ -63,26 +63,6 @@ export class ModeloComponent implements OnInit{
                     this.modelos = response.data;
                     this.token = this._userService.setToken(response.token);
                     this.loading = 'hide';
-
-                    // Total paginas
-                    /*this.pages = [];
-                    for(let i = 0; i < response.total_pages; i++){
-                        this.pages.push(i);                        
-                    }
-
-                    // Pagina anterior
-                    if(page >= 2){
-                        this.pagePrev = (page - 1);
-                    }else{
-                        this.pagePrev = page;                        
-                    }  
-
-                    // Pagina siguiente
-                    if(page < response.total_pages){
-                        this.pageNext = (page+1);
-                    }else{
-                        this.pageNext = page;
-                    }*/
                 }
             },
             error => {

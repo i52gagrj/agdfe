@@ -12,7 +12,10 @@ export class LoginComponent implements OnInit{
 	public user;
 	public identity;
 	public token;
-	public fallo;
+	public falloadm;
+	public fallopass;
+	public falloemail;
+	public sesionencurso;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -62,7 +65,11 @@ export class LoginComponent implements OnInit{
 
 
 	onSubmit(){			
-		this.fallo = false;	
+		this.falloadm = false;
+		this.falloemail = false;
+		this.fallopass = false;	
+		this.sesionencurso = false;
+		//SIGNUP
 		this._userService.signup(this.user).subscribe(
 			response => {
 				this.token = response;
@@ -82,7 +89,7 @@ export class LoginComponent implements OnInit{
 									if(!this.identity.status){
 										if(this.identity.isadmin){
 											console.log('Esta es la entrada de clientes, no de administradores');
-											this.fallo = true;
+											this.falloadm = true;
 											this._userService.logout2().subscribe(            
 												response => {                                     
 													console.log("fin")
@@ -97,7 +104,7 @@ export class LoginComponent implements OnInit{
 											window.location.href = '/login';
 										}else{
 											localStorage.setItem('identity', JSON.stringify(this.identity));										
-											window.location.href = '/documento';
+											window.location.href = '/';
 										}
 									}									
 								}
@@ -106,6 +113,11 @@ export class LoginComponent implements OnInit{
 								console.log(<any>error);
 							}	
 						);						
+					}else {
+						console.log(this.token.message);	
+						if(this.token.code == 402) this.falloemail = true;
+						if(this.token.code == 403) this.fallopass = true;
+						if(this.token.code == 404) this.sesionencurso = true;
 					}
 				}
 			},

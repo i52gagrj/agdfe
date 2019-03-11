@@ -25,7 +25,10 @@
                         </div>                    
                         <div class="alert alert-danger" *ngIf="status_documento == 'error'" >
                             ¡El documento NO se ha creado!
-                        </div>                      
+                        </div>          
+                        <div class="alert alert-danger" *ngIf="sizeerror" >
+                            ¡El documento es demasiado grande!
+                        </div>              
                         <form #documentoNewForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7 no-padding"> 
                             <p> 
                                 <label>Descripcion</label>
@@ -38,7 +41,7 @@
                                 <input type="file" (change)="fileChange($event)" class="form-control-file" name="filetoload"/>
                             </p>				
                 
-                            <input type="submit" value="Añadir" class="btn btn-primary" [disabled]="!documentoNewForm.form.valid" />
+                            <input type="submit" value="Añadir" class="btn btn-primary" [disabled]="!documentoNewForm.form.valid || !file || sizeerror" />
                         </form> 
                     </div>
                 </div>
@@ -63,11 +66,13 @@
                             {{documento.descripcion}}
                         </h5>
                     </td>
+
                     <td>
                         <h5>
                             {{documento.tipo}}
                         </h5>
-                    </td>                    
+                    </td>                 
+
                     <td>
                         <h5>
                             {{documento.fechahora.timestamp | generateDate}}
@@ -75,13 +80,11 @@
                     </td>                                       
                     
                     <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id)"> Mostrar </button>
-                    </td>
-                    <!--<td>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="descargarDocumento(documento.id, documento.ruta)"> Descargar </button>
-                    </td>-->                     
+                        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="mostrarDocumento(documento.id)"> Mostrar </button>                                                                  
+                    </td>        
+
                     <td>
-                        <a href="#myModal" role="button" class="btn btn-danger" data-toggle="modal">Borrar</a>
+                        <a href="#myModal" role="button" class="btn btn-danger" data-toggle="modal" (click)="loadData(documento.id)">Borrar</a>
                         <div id="myModal" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -90,15 +93,15 @@
                                         <h4 class="modal-title">¿Está seguro?</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p class="text-warning">Si borra el documento este no podrá recuperarse.</p>
+                                        <p class="text-warning">Si borra el documento {{idmodal}} este no podrá recuperarse.</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="borrarDocumento(documento.id)">Borrar</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="borrarDocumento()">Borrar</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>                                                 
                     </td>                                    
                 </tr>
                 </tbody>    
@@ -119,31 +122,6 @@
                     No se han encontrado documentos
                 </div>
             </div>                       
-
-			<!--<ul class="pagination" *ngIf="documentos && documentos.length >= 1">
-				<li>
-					<a [routerLink]="['/documento', pagePrev]" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-
-				<li *ngFor="let page of pages">  
-					<a [routerLink]="['/documento', page+1]">{{page+1}} </a>
-				</li>
-
-				<li>
-					<a [routerLink]="['/documento', pageNext]" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-            </ul>    -->
-            
-            <!-- <div>
-                <a [routerLink]="['/documento-new']" *ngIf="identity && identity.sub" class="btn btn-primary">                    
-                    Añadir documento
-                  </a>
-            </div> -->
-           
 
         </div>
     </div>

@@ -67,26 +67,6 @@ export class MensajeComponent implements OnInit{
                     this.mensajes = response.data;
                     this.token = this._userService.setToken(response.token);                 
                     this.loading = 'hide';
-
-                    // Total paginas
-                    /*this.pages = [];
-                    for(let i = 0; i < response.total_pages; i++){
-                        this.pages.push(i);                        
-                    }
-
-                    // Pagina anterior
-                    if(page >= 2){
-                        this.pagePrev = (page - 1);
-                    }else{
-                        this.pagePrev = page;                        
-                    }  
-
-                    // Pagina siguiente
-                    if(page < response.total_pages){
-                        this.pageNext = (page+1);
-                    }else{
-                        this.pageNext = page;
-                    }*/
                 }
             },
             error => {
@@ -112,7 +92,7 @@ export class MensajeComponent implements OnInit{
                         this.status_mensaje = 'error';
                     }else{
                         this.mensaje = response.data;
-                        this._router.navigate(['/mensaje']);
+                        location.reload(true);
                     }
                 }                    
             },

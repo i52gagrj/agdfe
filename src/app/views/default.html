@@ -1,1 +1,21 @@
-<h1>{{title}}</h1>
+<ul>
+    <li> 
+    <h2><a [routerLink]="['/documento']">Documentos</a></h2>
+    <h4>Tienes un total de {{documentos_cliente}} documentos añadidos</h4>
+    </li>
+
+    <li>
+    <h2><a [routerLink]="['/modelo']">Modelos</a></h2>
+    <h4>Tienes un total de {{modelos_cliente}} modelos disponibles</h4>
+    </li>
+
+    <li>
+    <h2><a [routerLink]="['/mensaje']">Mensajes</a></h2>
+    <h4>Tienes un total de {{mensajes_cliente}} mensajes a tu nombre</h4>
+    </li>
+
+    <!--<li>
+    <h3>Última conexión</h3>
+    Datos última conexión
+    </li>-->
+</ul>

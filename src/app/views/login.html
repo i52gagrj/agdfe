@@ -25,9 +25,21 @@
 
 		<input type="submit" value="Entrar" class="btn btn-primary" [disabled]="!loginForm.form.valid" />
 
-		<div class="alert alert-primary" role="alert" *ngIf="fallo">
-			Esta sección es solo para administradores
+		<div class="alert alert-primary" role="alert" *ngIf="falloadm">
+			Esta sección es solo para clientes
 		</div>
+
+		<div class="alert alert-primary" role="alert" *ngIf="falloemail">
+			Email incorrecto o mal formulado
+		</div>
+
+		<div class="identity-alert alert alert-danger" role="alert" *ngIf="fallopass">
+			Email o clave incorrectos
+		</div>
+
+		<div class="identity-alert alert alert-danger" role="alert" *ngIf="sesionencurso">
+			El usuario ya está conectado al sistema
+		</div>		
 
   	</form>
 </div>

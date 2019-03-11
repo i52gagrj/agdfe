@@ -23,11 +23,12 @@ export class DocumentoComponent implements OnInit {
     public identity;
     public token;
     public documentos: Array<Documento>;
-    public status_documento;
+    public status_documento = "none";
     public loading;
-    //public id;
     public documento;
+    public sizeerror;
     public file: File;
+    public idmodal;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -41,6 +42,8 @@ export class DocumentoComponent implements OnInit {
 	}
 
 	ngOnInit() {
+        this.file = null;
+        this.sizeerror = false;
         if(this.identity == null && !this.identity.sub){
             this._router.navigate(['/login']);
         }else {
@@ -73,7 +76,12 @@ export class DocumentoComponent implements OnInit {
         );              
     }
 
+    loadData(id){
+        this.idmodal=id;
+    }
+
     mostrarDocumento(id){       
+        console.log("Mostrar documento " + id);       
         this._documentoService.getDocumento(this.token, id).subscribe(            
             response => {
                 
@@ -84,7 +92,7 @@ export class DocumentoComponent implements OnInit {
                     window.open(url);
                 }
                 else{
-                    if(response.code = 405){
+                    if(response.code == 405){
                         console.log("Token caducado. Reiniciar sesión");
                         this._userService.logout();
                         this.identity = null;
@@ -103,36 +111,9 @@ export class DocumentoComponent implements OnInit {
         );        
     }
 
-    /*descargarDocumento(id, nombre){       
-        this._documentoService.getDocumento(this.token, id).subscribe(            
-            response => {
-                
-                if(!response.status){                    
-                    this.file = response;
-                    saveAs(this.file, nombre);                                        
-                }
-                else{
-                    if(response.code = 405){
-                        console.log("Token caducado. Reiniciar sesión");
-                        this._userService.logout();
-                        this.identity = null;
-                        this.token = null;
-                        window.location.href = '/login';                        
-                    }else{
-                        console.log(response);                        
-                    } 
-                        
-                }               
-            },
-            error => {
-                console.log("AQUÍ!!!");
-                console.log(<any>error);                
-            }
-        );        
-    }*/
-
-    borrarDocumento(id){        
-        this._documentoService.borrarDocumento(this.token, id).subscribe(            
+    borrarDocumento(){ 
+        console.log("Borrar documento " + this.idmodal);       
+        this._documentoService.borrarDocumento(this.token, this.idmodal).subscribe(            
             response => {
                 if(response.code == 405){
                     console.log("Token caducado. Reiniciar sesión")
@@ -154,41 +135,48 @@ export class DocumentoComponent implements OnInit {
             error => {
                 console.log(<any>error)                
             }
-        );         
+        );
     }
 
     fileChange(event) {
         let fileList: FileList = event.target.files;
         if(fileList.length > 0) {
             this.file = fileList[0];            
+            if(this.file.size>2000000) this.sizeerror = true;
+            else this.sizeerror = false;
         }
     }
 
     onSubmit(){
-        this._documentoService.create(this.token, this.documento, this.file).subscribe(            
-            response => {
-                if(response.code == 405){
-                    console.log("Token caducado. Reiniciar sesión")
-                    this._userService.logout();
-                    this.identity = null;
-                    this.token = null;
-                    window.location.href = '/login';                        
+        if(this.file.size>2000000) this.sizeerror = true;
+        else{
+            this._documentoService.create(this.token, this.documento, this.file).subscribe(            
+                response => {
+                    if(response.code == 405){
+                        console.log("Token caducado. Reiniciar sesión")
+                        this._userService.logout();
+                        this.identity = null;
+                        this.token = null;
+                        window.location.href = '/login';                        
+                    }
+                    else{                                                         
+                        this.status_documento = response.status;
+                        this.token = this._userService.setToken(response.token);                     
+                        if(this.status_documento != 'success'){
+                            this.status_documento = 'error';
+                        }else{
+                            this.documento = response.data;
+                            this.file = null;
+                            //this.ngOnInit();
+                            location.reload(true);
+                        }     
+                    }               
+                },
+                error => {
+                    console.log(<any>error)                
                 }
-                else{                                                         
-                    this.status_documento = response.status;
-                    this.token = this._userService.setToken(response.token);                     
-                    if(this.status_documento != 'success'){
-                        this.status_documento = 'error';
-                    }else{
-                        this.documento = response.data;
-                        this.ngOnInit();
-                    }     
-                }               
-            },
-            error => {
-                console.log(<any>error)                
-            }
-        );
+            );
+        }
     }
 }
 
