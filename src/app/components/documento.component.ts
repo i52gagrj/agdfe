@@ -142,13 +142,13 @@ export class DocumentoComponent implements OnInit {
         let fileList: FileList = event.target.files;
         if(fileList.length > 0) {
             this.file = fileList[0];            
-            if(this.file.size>2000000) this.sizeerror = true;
+            if(this.file.size>8000000) this.sizeerror = true;
             else this.sizeerror = false;
         }
     }
 
     onSubmit(){
-        if(this.file.size>2000000) this.sizeerror = true;
+        if(this.file.size>8000000) this.sizeerror = true;
         else{
             this._documentoService.create(this.token, this.documento, this.file).subscribe(            
                 response => {
