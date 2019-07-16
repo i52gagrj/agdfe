@@ -16,8 +16,8 @@ import { MensajeNewComponent } from './components/mensaje.new.component';
 import { DefaultComponent } from './components/default.component';
 
 import { GenerateDatePipe } from './pipes/generate.date.pipe';
-import { NgUploaderModule } from 'ngx-uploader';
-import { FileUploadModule } from 'ng2-file-upload';
+//import { NgUploaderModule } from 'ngx-uploader';
+//import { FileUploadModule } from 'ng2-file-upload';
 
 import { DataTableModule } from 'angular2-datatable';
 
@@ -39,8 +39,8 @@ import { DataTableModule } from 'angular2-datatable';
     FormsModule,
     HttpModule,    
     routing,
-    NgUploaderModule,
-    FileUploadModule,
+    //NgUploaderModule,
+    //FileUploadModule,
     DataTableModule
   ],
   providers: [ appRoutingProviders ],
