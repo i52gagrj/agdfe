@@ -1,3 +1,9 @@
+# Objetivo
+Parte del proyecto fin de grado: app para la descarga y subida de documentos orientada para gestorias de tamaño pequeño y mediano. 
+Frontend orientado a los clientes.
+Subida de documentación necesaria para realizar declaraciones y gestiones.
+Bajada de los modelos ya realizados y de la documentación producto de las gestiones
+
 # Angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.9.
